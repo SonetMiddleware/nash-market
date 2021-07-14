@@ -1,0 +1,47 @@
+@import '../../assets/styles/global.less';
+
+.btn-common {
+  border: 2px solid @mainColor;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-family: Poppins;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 24px;
+  color: @mainColor;
+  cursor: pointer;
+  background: none;
+  width: 70px;
+}
+.btn-common:hover {
+  background: @mainColor;
+  color: #ffffff;
+}
+.wallet-status-container {
+  .btn-connect {
+    width: 160px;
+    height: 40px;
+  }
+  .wallet-connected {
+    position: relative;
+    width: 180px;
+    height: 40px;
+    background: @mainColor;
+    border-radius: 6px 22px 22px 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    > span {
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 15px;
+      line-height: 22px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin: 0 5px;
+    }
+  }
+}
