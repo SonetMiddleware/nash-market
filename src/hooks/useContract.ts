@@ -36,7 +36,7 @@ export const useRpcRouter = () => {
       getContract(
         RpcRouterAbi.abi,
         Contracts.RPCRouter[process.env.APP_CHAIN_ID],
-        provider,
+        provider.getSigner(),
       ),
     [provider],
   );
@@ -49,7 +49,7 @@ export const useCash = () => {
       getContract(
         ERC20Abi,
         Contracts.MockRPC[process.env.APP_CHAIN_ID],
-        provider,
+        provider.getSigner(),
       ),
     [provider],
   );
@@ -62,7 +62,7 @@ export const useMeme2 = () => {
       getContract(
         Meme2Abi.abi,
         Contracts.PlatwinMEME2[process.env.APP_CHAIN_ID],
-        provider,
+        provider.getSigner(),
       ),
     [provider],
   );
