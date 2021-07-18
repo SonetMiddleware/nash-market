@@ -10,4 +10,11 @@ export default defineConfig({
 
     'process.env.APP_CHAIN_ID': '80001', //'97',
   },
+  //TODO 部署时解决跨域问题
+  proxy: {
+    '/api/v1': {
+      target: 'http://3.36.115.102:8080/',
+      changeOrigin: true,
+    },
+  },
 });
