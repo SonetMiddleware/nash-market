@@ -1,5 +1,5 @@
 import { request } from 'umi';
-
+const origin = 'https://testapi.platwin.io/api/v1';
 export interface IAddUserFavParams {
     addr: string;
     contract: string;
@@ -7,7 +7,7 @@ export interface IAddUserFavParams {
     fav: number; // 0表示取消收藏，等于1表示收藏
 }
 export const addUserFav = async (params: IAddUserFavParams) => {
-    const url = '/api/v1/favorite-nft';
+    const url = origin + '/favorite-nft';
     try {
         const res = await request(url, {
             method: 'POST',
@@ -26,7 +26,33 @@ export interface IGetUserFavListParams {
     contract?: string;
 }
 export const getUserFavList = async (params: IGetUserFavListParams) => {
-    const url = '/api/v1/favorite';
+    const url = origin + '/favorite';
+    const res = await request(url, {
+        method: 'GET',
+        params,
+    });
+    console.log(res);
+    return res.data;
+};
+
+export interface IGetUserOwnedListParams {
+    addr: string;
+    contract?: string;
+    token_id?: number;
+}
+export interface IOwnedListItem {
+    contract: string; // 合约地址
+    erc: string; // 协议标准，1155或者721
+    token_id: string; //
+    amount: string; // 数量，1155的同ID的NFT数量不止一个，721的只有1个
+    uri: string; // 资源定位符，ipfs索引或者其他服务器资源
+    owner: string; // 拥有者，等于传的addr参数
+    update_block: string; // 该NFT状态更新的区块号
+}
+export const getUserOwnedList = async (
+    params: IGetUserOwnedListParams,
+): Promise<IOwnedListItem[]> => {
+    const url = origin + '/nfts';
     const res = await request(url, {
         method: 'GET',
         params,
@@ -63,7 +89,7 @@ export interface IOrderListItem {
     update_block: string; // 订单状态更新的区块号
 }
 export const getOrderList = async (params: IGetOrderListParams) => {
-    const url = '/api/v1/orders';
+    const url = origin + '/orders';
     const res = await request(url, {
         method: 'GET',
         params,

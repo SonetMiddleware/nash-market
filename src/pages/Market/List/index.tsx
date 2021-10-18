@@ -44,8 +44,7 @@ export default () => {
     }, []);
 
     return (
-        <div>
-            <p>Market: </p>
+        <div className="market-container ">
             {/* <InfiniteScroll
                 className="market-container"
                 initialLoad={false}
@@ -62,7 +61,7 @@ export default () => {
                         <div className="img-item">
                             <img
                                 onClick={() => toDetail(item)}
-                                src={`${imgOrigin}?uri=${item.resource}&size=500x0`}
+                                src={`https://${item.uri}.ipfs.dweb.link/`}
                                 alt=""
                             />
                         </div>
