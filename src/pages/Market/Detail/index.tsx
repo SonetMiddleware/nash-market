@@ -5,7 +5,7 @@ import { Tag, Button } from 'antd';
 import { SellTokenOptions } from '@/config';
 import { useWeb3React } from '@web3-react/core';
 import { useMarket, useMeme2 } from '@/hooks/useContract';
-
+import { ethers } from 'ethers';
 import './index.less';
 export default (props: any) => {
     const { account } = useWeb3React();
@@ -46,35 +46,51 @@ export default (props: any) => {
 
     return (
         <div className="detail-container">
-            <img src={`https://${detail.uri}.ipfs.dweb.link/`} alt="" />
+            <div className="img-container">
+                <img src={`https://${detail.uri}.ipfs.dweb.link/`} alt="" />
+            </div>
             <div className="detail-info">
                 <div className="tags">
                     <Tag color="cyan">ERC721</Tag>
-                    <Tag color="blue">Hot</Tag>
+                    <Tag color="orange">Hot</Tag>
                     <Tag color="geekblue">On Sale</Tag>
                 </div>
                 <div className="prices">
-                    <p className="lable">Price</p>
+                    <p className="label">Price</p>
                     <p>
                         <span>Min: </span>
-                        {detail.min_price} {getTokenSymbol(detail.sell_token)}
+                        {ethers.utils.formatEther(detail.min_price || 0)}{' '}
+                        {getTokenSymbol(detail.sell_token)}
                     </p>
                     <p>
                         <span>Max: </span>
-                        {detail.max_price} {getTokenSymbol(detail.sell_token)}
+                        {ethers.utils.formatEther(detail.max_price || 0)}{' '}
+                        {getTokenSymbol(detail.sell_token)}
                     </p>
                     {!account && (
-                        <Button className="btn-submit" onClick={handleConnect}>
+                        <Button
+                            className="btn-submit"
+                            onClick={handleConnect}
+                            type="primary"
+                        >
                             Connect Wallet
                         </Button>
                     )}
                     {!isApproved && (
-                        <Button className="btn-submit" onClick={handleApporve}>
+                        <Button
+                            className="btn-submit"
+                            onClick={handleApporve}
+                            type="primary"
+                        >
                             Approve to buy
                         </Button>
                     )}
                     {account && isApproved && (
-                        <Button className="btn-submit" onClick={handleBuy}>
+                        <Button
+                            className="btn-submit"
+                            onClick={handleBuy}
+                            type="primary"
+                        >
                             Buy
                         </Button>
                     )}

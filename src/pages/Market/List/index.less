@@ -13,17 +13,36 @@
     flex-wrap: wrap;
 
     .img-item {
-        width: 120px;
-        height: 120px;
-        padding: 10px;
-        > img {
-            width: 90px;
-            height: 90px;
-            transition: all 0.3s;
-            cursor: pointer;
+        border: 1px solid #ccc;
+        margin: 15px;
+        .img-container {
+            height: 300px;
+            width: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            > img {
+                width: 280px;
+                transition: all 0.3s;
+                cursor: pointer;
+            }
+            // > img:hover {
+            //     transform: scale(1.1);
+            // }
         }
-        > img:hover {
-            transform: scale(1.1);
+
+        .item-info {
+            .label {
+                color: rgb(112, 122, 131);
+            }
+            .price-amount {
+                color: rgb(53, 56, 64);
+                font-weight: bold;
+            }
+            padding: 10px;
+            border-top: 1px solid #ccc;
+            display: flex;
+            justify-content: space-between;
         }
     }
 }

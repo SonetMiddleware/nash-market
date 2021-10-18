@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { getUserOwnedList, IOwnedListItem } from '@/services';
 import { useWeb3React } from '@web3-react/core';
-import { useMarketProxyWithoutRPC, useMeme2 } from '@/hooks/useContract';
+import {
+    useMarketProxyWithoutRPC,
+    useMeme2WithoutRPC,
+} from '@/hooks/useContract';
 import useWeb3Provider from '@/hooks/useWeb3Provider';
 import './index.less';
 import { Button, message, Modal, Select, Form, Input } from 'antd';
@@ -15,7 +18,7 @@ const { Option } = Select;
 
 export default () => {
     const { account } = useWeb3React();
-    const meme2Contract = useMeme2();
+    const meme2Contract = useMeme2WithoutRPC();
     const market = useMarketProxyWithoutRPC();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedToken, setSelectedToken] = useState<IOwnedListItem>(null);
@@ -24,14 +27,13 @@ export default () => {
     const [isApproved, setIsApproved] = useState(false);
     const [form] = Form.useForm();
     const provider = useWeb3Provider();
-    const meme2 = useMeme2();
     const [submitting, setSubmitting] = useState(false);
 
     const getIsApproved = async (tokenId) => {
-        const approver = await meme2.getApproved(
+        const approver = await meme2Contract.getApproved(
             ethers.BigNumber.from(tokenId),
         );
-        const isApproveAll = await meme2.isApprovedForAll(
+        const isApproveAll = await meme2Contract.isApprovedForAll(
             account,
             marketContract,
         );
@@ -98,6 +100,14 @@ export default () => {
             console.log(res);
             const resp = await res.wait(1);
             console.log(resp);
+            // const event = resp.events.find(
+            //     (item) => item.address === marketContract,
+            // );
+            // if (event) {
+            //     const orderId = event.args?.orderId;
+            // console.log('orderId: ', orderId);
+            // }
+
             setSubmitting(false);
         } catch (errorInfo) {
             console.log('Failed:', errorInfo);
@@ -121,9 +131,9 @@ export default () => {
     const handleApprove = async () => {
         try {
             setSubmitting(true);
-            const tx = await meme2.approve(
+            const tx = await meme2Contract.setApprovalForAll(
                 marketContract,
-                selectedToken.token_id,
+                true,
             );
             await tx.wait();
             setIsApproved(true);

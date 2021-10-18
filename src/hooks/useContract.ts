@@ -4,6 +4,7 @@ import RpcRouterAbi from '@/config/abi/contracts/RPCRouter.json';
 import ERC20Abi from '@/config/abi/erc20.json';
 import Contracts from '@/config/constants/contracts';
 import Meme2Abi from '@/config/abi/contracts/PlatwinMEME2.json';
+import Meme2WithRPCAbi from '@/config/abi/contracts/PlatwinMEME2WithoutRPC.json';
 import MarketAbi from '@/config/abi/contracts/Market.json';
 import {
     getBep20Contract,
@@ -62,6 +63,19 @@ export const useMeme2 = () => {
             getContract(
                 Meme2Abi.abi,
                 Contracts.PlatwinMEME2[process.env.APP_CHAIN_ID],
+                provider.getSigner(),
+            ),
+        [provider],
+    );
+};
+
+export const useMeme2WithoutRPC = () => {
+    const provider = useWeb3Provider();
+    return useMemo(
+        () =>
+            getContract(
+                Meme2WithRPCAbi.abi,
+                Contracts.PlatwinMEME2WithoutRPC[process.env.APP_CHAIN_ID],
                 provider.getSigner(),
             ),
         [provider],

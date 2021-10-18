@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
-import { List, message, Avatar, Spin } from 'antd';
+import { List, message, Avatar, Spin, Button } from 'antd';
 import { useHistory } from 'umi';
+import './index.less';
 import { IGetOrderListParams, IOrderListItem, getOrderList } from '@/services';
+import { HeartOutlined } from '@ant-design/icons';
 export default () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -36,7 +38,7 @@ export default () => {
     };
 
     const toDetail = (item) => {
-        history.push('/detail/' + item.id);
+        history.push('/detail/' + item.order_id);
     };
 
     useEffect(() => {
@@ -59,11 +61,37 @@ export default () => {
                 renderItem={(item, index) => (
                     <List.Item key={index}>
                         <div className="img-item">
-                            <img
-                                onClick={() => toDetail(item)}
-                                src={`https://${item.uri}.ipfs.dweb.link/`}
-                                alt=""
-                            />
+                            <div className="img-container">
+                                <img
+                                    onClick={() => toDetail(item)}
+                                    src={`https://${item.uri}.ipfs.dweb.link/`}
+                                    alt=""
+                                />
+                            </div>
+
+                            <div className="item-info">
+                                <div className="prices">
+                                    <p className="label"> Price: </p>
+                                    <p className="price-amount">
+                                        <span>1 ~ 3</span>
+                                        <span> ETH</span>
+                                    </p>
+                                </div>
+                                <div className="options">
+                                    <p style={{ textAlign: 'right' }}>
+                                        <HeartOutlined />
+                                        <span>10</span>
+                                    </p>
+                                    <p>
+                                        <Button
+                                            type="link"
+                                            style={{ padding: 0 }}
+                                        >
+                                            Buy now
+                                        </Button>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </List.Item>
                 )}
