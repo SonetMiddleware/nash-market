@@ -82,7 +82,7 @@ export default (props: any) => {
                             onClick={handleApporve}
                             type="primary"
                         >
-                            Approve to buy
+                            Buy
                         </Button>
                     )}
                     {account && isApproved && (
