@@ -11,6 +11,9 @@ import {
 } from '@/hooks/useContract';
 import { ethers } from 'ethers';
 import './index.less';
+import useAuth from '@/hooks/useAuth';
+import { ConnectorNames } from '@/utils/web3';
+
 export default (props: any) => {
     const { account } = useWeb3React();
     const [detail, setDetail] = useState<IOrderListItem>({});
@@ -18,6 +21,7 @@ export default (props: any) => {
     const history = useHistory();
     const id = props.match.params.id;
     const market = useMarketProxyWithoutRPC();
+    const { login, logout } = useAuth();
 
     useEffect(() => {
         (async () => {
@@ -34,7 +38,10 @@ export default (props: any) => {
             ?.label;
     };
 
-    const handleConnect = () => {};
+    const handleConnect = () => {
+        const connectorId = ConnectorNames.Injected;
+        login(connectorId);
+    };
 
     const handleBuy = async () => {
         try {
