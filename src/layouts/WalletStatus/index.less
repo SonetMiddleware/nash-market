@@ -1,47 +1,53 @@
 @import '../../assets/styles/global.less';
 
 .btn-common {
-  border: 2px solid @mainColor;
-  box-sizing: border-box;
-  border-radius: 4px;
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 15px;
-  line-height: 24px;
-  color: @mainColor;
-  cursor: pointer;
-  background: none;
-  width: 70px;
+    border: 2px solid @mainColor;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+    color: @mainColor;
+    cursor: pointer;
+    background: none;
+    width: 70px;
 }
 .btn-common:hover {
-  background: @mainColor;
-  color: #ffffff;
+    background: @mainColor;
+    color: #ffffff;
 }
 .wallet-status-container {
-  .btn-connect {
-    width: 160px;
-    height: 40px;
-  }
-  .wallet-connected {
-    position: relative;
-    width: 180px;
-    height: 40px;
-    background: @mainColor;
-    border-radius: 6px 22px 22px 6px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    > span {
-      font-family: Poppins;
-      font-style: normal;
-      font-weight: bold;
-      font-size: 15px;
-      line-height: 22px;
-      text-transform: uppercase;
-      color: #ffffff;
-      margin: 0 5px;
+    .btn-connect {
+        width: 160px;
+        height: 40px;
     }
-  }
+    .wallet-connected {
+        position: relative;
+        background: linear-gradient(
+            92.68deg,
+            #ff9a46 0%,
+            #ff67c1 49.34%,
+            #9d5fe9 100.77%
+        );
+        height: 40px;
+        padding: 8px 63px;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        > span {
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 15px;
+            line-height: 22px;
+            text-transform: uppercase;
+            color: #ffffff;
+            margin: 0 5px;
+        }
+    }
 }

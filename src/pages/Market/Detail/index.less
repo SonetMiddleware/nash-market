@@ -1,38 +1,125 @@
 .detail-container {
-    padding: 20px 80px;
+    padding: 70px 0px;
     display: flex;
     justify-content: center;
     .img-container {
-        width: 500px;
-        height: 500px;
-        border: 1px solid #ccc;
-        border-radius: 25px;
+        width: 646px;
+        height: 646px;
         display: flex;
         justify-content: center;
         align-items: center;
+        background: #a0d7e7;
+        border-radius: 40px;
         > img {
-            width: 480px;
+            width: 100%;
+            border-radius: 40px;
         }
     }
     .detail-info {
-        width: 400px;
-        margin-left: 20px;
-        padding: 20px;
-        border: 1px solid #ccc;
-        border-radius: 25px;
+        width: 493px;
+        height: 646px;
+        margin-left: 65px;
+        padding: 77px 55px;
+        border: 3px solid #ccc;
+        border-radius: 40px;
+        background: linear-gradient(#fff, #fff) padding-box,
+            /*this is your grey background*/
+                linear-gradient(
+                    180deg,
+                    #ff9a46 0%,
+                    #ff67c1 48.44%,
+                    #9d5fe9 97.92%
+                )
+                border-box;
+
+        border: 1px solid transparent;
         .tags {
-            margin-bottom: 15px;
+            margin-bottom: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            span {
+                margin-right: 15px;
+                padding: 8px 30px;
+                border-radius: 10px;
+                font-family: Poppins;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 24px;
+                text-align: center;
+            }
+            .tag-erc721 {
+                background: #c5ffdd;
+                color: #1cb703;
+            }
+            .tag-hot {
+                background: linear-gradient(#fff, #fff) padding-box,
+                    /*this is your grey background*/
+                        linear-gradient(
+                            180deg,
+                            #ff9a46 0%,
+                            #ff67c1 48.44%,
+                            #9d5fe9 97.92%
+                        )
+                        border-box;
+
+                border: 1px solid transparent;
+                > span {
+                    padding: 0;
+                    margin: 0;
+                    background: linear-gradient(
+                        105.54deg,
+                        #ff9a46 8.7%,
+                        #ff67c1 47.7%,
+                        #9d5fe9 92.01%
+                    );
+                    background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+            .tag-sale {
+                background: #e6ddff;
+                border-radius: 10px;
+                color: #9d5fe9;
+            }
         }
         .prices {
             .label {
-                font-weight: bold;
-                font-size: 18px;
+                font-family: Poppins;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 40px;
+                line-height: 20px;
+                color: #000000;
+                margin-bottom: 40px;
+            }
+            > p {
+                font-family: Poppins;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 21px;
+                line-height: 20px;
+                color: #000000;
+                margin-bottom: 16px;
             }
         }
-        .btn-submit {
+        .submit-btn {
             margin-top: 20px;
-            width: 200px;
-            height: 40px;
+            width: 383px;
+            height: 56px;
+            font-size: 21px;
+            &:hover,
+            &:focus,
+            &:active {
+                color: #ffffff;
+                background: linear-gradient(
+                    92.68deg,
+                    #ff9a46 0%,
+                    #ff67c1 49.34%,
+                    #9d5fe9 100.77%
+                );
+                border: none;
+            }
         }
     }
 }

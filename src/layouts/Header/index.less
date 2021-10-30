@@ -1,57 +1,65 @@
 @import '../../assets/styles/global.less';
 
 .header-nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100px;
-  position: relative;
-  background: rgba(71, 57, 44, 0.34);
-  > ul {
-    list-style: none;
     display: flex;
-    > li {
-      margin-right: 55px;
-      > a {
-        font-family: Poppins;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 16px;
-        line-height: 24px;
-        text-transform: uppercase;
-        color: @mainTextColor;
-        position: relative;
-      }
-      > .active {
-        color: @mainColor;
-        font-weight: 800;
-      }
-      > .active:after {
-        content: '';
-        width: 40px;
-        height: 2px;
-        background: @mainColor;
-        display: block;
-        margin: 10px auto;
-        margin-bottom: 0;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 120px;
+
+    background: #ffffff;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 0px 0px 40px 40px;
+    > ul {
+        list-style: none;
+        display: flex;
+        > li {
+            margin-right: 55px;
+            > a {
+                font-family: Poppins;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 21px;
+                line-height: 20px;
+                color: #000000;
+            }
+            > .active {
+                display: block;
+                position: relative;
+                font-weight: 600;
+                padding-bottom: 20px;
+            }
+            > .active::after {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                content: '';
+                height: 3px;
+                width: 100%;
+                display: block;
+
+                background: linear-gradient(
+                    90deg,
+                    #ff9a46 8.04%,
+                    #ff67c1 54.98%,
+                    #9d5fe9 100%
+                );
+            }
+        }
+        > li:last-child {
+            margin: 0;
+        }
+    }
+    .logo {
+        width: 74px;
+        height: 74px;
+        margin-right: 34px;
         position: absolute;
-        left: 0;
-        right: 0;
-      }
+        left: 80px;
     }
-    > li:last-child {
-      margin: 0;
+    .wallet-status {
+        position: absolute;
+        top: 40px;
+        right: 80px;
     }
-  }
-  .logo {
-    width: 74px;
-    height: 74px;
-    margin-right: 34px;
-  }
-  .wallet-status {
-    position: absolute;
-    top: 30px;
-    right: 225px;
-  }
 }

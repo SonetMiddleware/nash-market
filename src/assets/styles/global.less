@@ -25,6 +25,32 @@ img {
 @lightBlue: #f1f7ff;
 @yellow: #fcd144;
 
-p {
+p,
+ul {
     margin: 0;
+}
+
+.common-btn-primary {
+    background: linear-gradient(
+        100.51deg,
+        #ff9a46 11.69%,
+        #ff67c1 53.3%,
+        #9d5fe9 93.18%
+    );
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 15px;
+    /* identical to box height, or 107% */
+    text-align: center;
+    color: #ffffff;
+    padding: 9px 19px;
+    border: none;
+    cursor: pointer;
+    &:hover {
+        opacity: 0.8;
+    }
 }

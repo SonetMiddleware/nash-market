@@ -40,7 +40,7 @@ export default () => {
         return approver === marketContract || isApproveAll;
     };
 
-    const fetchFavList = async () => {
+    const fetchOwnedList = async () => {
         const res = await getUserOwnedList({
             addr: account,
             contract:
@@ -100,14 +100,15 @@ export default () => {
             console.log(res);
             const resp = await res.wait(1);
             console.log(resp);
-            // const event = resp.events.find(
-            //     (item) => item.address === marketContract,
-            // );
-            // if (event) {
-            //     const orderId = event.args?.orderId;
-            // console.log('orderId: ', orderId);
-            // }
-
+            const event = resp.events.find(
+                (item) => item.address === marketContract,
+            );
+            if (event) {
+                const orderId = event.args?.orderId;
+                console.log('orderId: ', orderId);
+            }
+            message.success('Sell NFT succeed!');
+            fetchOwnedList();
             setSubmitting(false);
         } catch (errorInfo) {
             console.log('Failed:', errorInfo);
@@ -146,7 +147,7 @@ export default () => {
 
     useEffect(() => {
         if (account) {
-            fetchFavList();
+            fetchOwnedList();
         }
     }, [account]);
 
@@ -154,6 +155,7 @@ export default () => {
         if (selectedToken) {
             (async () => {
                 const status = await getIsApproved(selectedToken.token_id);
+                console.log('status: ', status);
                 setIsApproved(status);
             })();
         } else {
@@ -167,12 +169,18 @@ export default () => {
             <ul className="fav-list">
                 {favList.map((item) => (
                     <li key={item.token_id} className="token-container">
-                        <img
-                            src={`https://${item.uri}.ipfs.dweb.link/`}
-                            alt=""
-                        />
+                        <div className="img-container">
+                            <img
+                                src={`https://${item.uri}.ipfs.dweb.link/`}
+                                alt=""
+                            />
+                        </div>
+
                         <div className="options">
-                            <Button onClick={() => handleSell(item)}>
+                            <Button
+                                onClick={() => handleSell(item)}
+                                className="btn-sell"
+                            >
                                 Sell
                             </Button>
                         </div>
@@ -181,21 +189,25 @@ export default () => {
             </ul>
             <Modal
                 title="Sell NFT"
+                className="sell-modal"
                 visible={isModalVisible}
                 onOk={handleOk}
                 onCancel={handleCancel}
                 okButtonProps={{ disabled: !isApproved, loading: submitting }}
             >
                 <div className="sell-container">
-                    <img
-                        src={`https://${selectedToken?.uri}.ipfs.dweb.link/`}
-                        alt=""
-                    />
+                    <div className="sell-img-container">
+                        <img
+                            src={`https://${selectedToken?.uri}.ipfs.dweb.link/`}
+                            alt=""
+                        />
+                    </div>
                     <div className="sell-form">
                         {!isApproved && (
                             <div style={{ marginBottom: 15 }}>
                                 <Button
                                     type="primary"
+                                    className="common-btn-primary btn-approve"
                                     onClick={handleApprove}
                                     loading={submitting}
                                 >
@@ -221,7 +233,7 @@ export default () => {
                                     },
                                 ]}
                             >
-                                <Select style={{ width: 120 }}>
+                                <Select className="sell-form-input">
                                     {SellTokenOptions.map((item) => (
                                         <Option value={item.value}>
                                             {item.label}
@@ -239,7 +251,7 @@ export default () => {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Input className="sell-form-input" />
                             </Form.Item>
                             <Form.Item
                                 label="Min price"
@@ -251,7 +263,7 @@ export default () => {
                                     },
                                 ]}
                             >
-                                <Input />
+                                <Input className="sell-form-input" />
                             </Form.Item>
                         </Form>
                     </div>

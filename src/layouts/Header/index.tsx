@@ -2,9 +2,8 @@ import React from 'react';
 import { NavLink } from 'umi';
 import './index.less';
 import WalletStatus from '../WalletStatus';
-import useEagerConnect from '@/hooks/useEagerConnect'
-import Logo from '@/assets/images/logo@128.png'
-
+import useEagerConnect from '@/hooks/useEagerConnect';
+import Logo from '@/assets/images/logo.png';
 
 export default () => {
     useEagerConnect();
@@ -17,15 +16,13 @@ export default () => {
                         Market
                     </NavLink>
                 </li>
-                <li>
+                {/* <li>
                     <NavLink to="/mint">
                         Mint
                     </NavLink>
-                </li>
+                </li> */}
                 <li>
-                    <NavLink to="/wallet">
-                        My Wallet
-                    </NavLink>
+                    <NavLink to="/wallet">My Wallet</NavLink>
                 </li>
             </ul>
             <div className="wallet-status">

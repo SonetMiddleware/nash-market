@@ -13,18 +13,32 @@
     flex-wrap: wrap;
 
     .img-item {
-        border: 1px solid #ccc;
+        &:hover {
+            box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        background: #ffffff;
+        border: 1px solid #e5e5e5;
+        box-sizing: border-box;
+        border-radius: 10px;
         margin: 15px;
+        width: 282px;
+        height: 394px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
         .img-container {
-            height: 300px;
-            width: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
+            margin-top: 24px;
+            background: #a0d7e7;
+            border-radius: 15px;
+
             > img {
-                width: 280px;
+                width: 240px;
                 transition: all 0.3s;
-                cursor: pointer;
+                border-radius: 15px;
             }
             // > img:hover {
             //     transform: scale(1.1);
@@ -33,16 +47,45 @@
 
         .item-info {
             .label {
-                color: rgb(112, 122, 131);
+                font-family: Poppins;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 14px;
+                line-height: 15px;
+                color: #808191;
+                margin-bottom: 25px;
             }
             .price-amount {
-                color: rgb(53, 56, 64);
-                font-weight: bold;
+                font-family: Poppins;
+                font-style: normal;
+                font-weight: 600;
+                font-size: 21px;
+                line-height: 15px;
+                color: #000000;
             }
-            padding: 10px;
-            border-top: 1px solid #ccc;
+            width: 100%;
+            padding: 33px 20px;
             display: flex;
             justify-content: space-between;
+            .fav-num {
+                justify-content: flex-end;
+                display: flex;
+                align-items: center;
+                margin-bottom: 10px;
+                > img {
+                    width: 14px;
+                    height: 13px;
+                    margin-right: 7px;
+                }
+                > span {
+                    font-family: Poppins;
+                    font-style: normal;
+                    font-weight: normal;
+                    font-size: 14px;
+
+                    color: #000000;
+                }
+            }
         }
     }
 }

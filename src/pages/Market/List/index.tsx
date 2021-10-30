@@ -4,7 +4,7 @@ import { List, message, Avatar, Spin, Button } from 'antd';
 import { useHistory } from 'umi';
 import './index.less';
 import { IGetOrderListParams, IOrderListItem, getOrderList } from '@/services';
-import { HeartOutlined } from '@ant-design/icons';
+import IconHeart from '@/assets/images/icon-heart.png';
 export default () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -63,7 +63,6 @@ export default () => {
                         <div className="img-item">
                             <div className="img-container">
                                 <img
-                                    onClick={() => toDetail(item)}
                                     src={`https://${item.uri}.ipfs.dweb.link/`}
                                     alt=""
                                 />
@@ -78,17 +77,17 @@ export default () => {
                                     </p>
                                 </div>
                                 <div className="options">
-                                    <p style={{ textAlign: 'right' }}>
-                                        <HeartOutlined />
+                                    <p className="fav-num">
+                                        <img src={IconHeart} alt="" />
                                         <span>10</span>
                                     </p>
                                     <p>
-                                        <Button
-                                            type="link"
-                                            style={{ padding: 0 }}
+                                        <button
+                                            className="common-btn-primary"
+                                            onClick={() => toDetail(item)}
                                         >
                                             Buy now
-                                        </Button>
+                                        </button>
                                     </p>
                                 </div>
                             </div>

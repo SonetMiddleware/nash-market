@@ -1,20 +1,23 @@
 import { getOrderList, IOrderListItem } from '@/services';
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'umi';
-import { Tag, Button } from 'antd';
+import { Tag, Button, message } from 'antd';
 import { SellTokenOptions } from '@/config';
 import { useWeb3React } from '@web3-react/core';
-import { useMarket, useMeme2 } from '@/hooks/useContract';
+import {
+    useMarket,
+    useMarketProxyWithoutRPC,
+    useMeme2,
+} from '@/hooks/useContract';
 import { ethers } from 'ethers';
 import './index.less';
 export default (props: any) => {
     const { account } = useWeb3React();
     const [detail, setDetail] = useState<IOrderListItem>({});
-    const [isApproved, setIsApproved] = useState(false);
     const [submitting, setSubmitting] = useState(false);
     const history = useHistory();
     const id = props.match.params.id;
-    const market = useMarket();
+    const market = useMarketProxyWithoutRPC();
 
     useEffect(() => {
         (async () => {
@@ -33,14 +36,16 @@ export default (props: any) => {
 
     const handleConnect = () => {};
 
-    const handleApporve = async () => {};
-
     const handleBuy = async () => {
         try {
             setSubmitting(true);
+            await market.takeOrder(id, 1);
+            setSubmitting(false);
+            message.success('Buy NFT succeed!');
         } catch (err) {
             console.log(err);
             setSubmitting(false);
+            message.error('Wallet issues/balance issue.');
         }
     };
 
@@ -51,9 +56,11 @@ export default (props: any) => {
             </div>
             <div className="detail-info">
                 <div className="tags">
-                    <Tag color="cyan">ERC721</Tag>
-                    <Tag color="orange">Hot</Tag>
-                    <Tag color="geekblue">On Sale</Tag>
+                    <span className="tag-erc721">ERC721</span>
+                    <span className="tag-hot">
+                        <span>Hot</span>
+                    </span>
+                    <span className="tag-sale">On Sale</span>
                 </div>
                 <div className="prices">
                     <p className="label">Price</p>
@@ -68,28 +75,18 @@ export default (props: any) => {
                         {getTokenSymbol(detail.sell_token)}
                     </p>
                     {!account && (
-                        <Button
-                            className="btn-submit"
+                        <button
+                            className="common-btn-primary submit-btn"
                             onClick={handleConnect}
-                            type="primary"
                         >
                             Connect Wallet
-                        </Button>
+                        </button>
                     )}
-                    {!isApproved && (
+                    {account && (
                         <Button
-                            className="btn-submit"
-                            onClick={handleApporve}
-                            type="primary"
-                        >
-                            Approve to buy
-                        </Button>
-                    )}
-                    {account && isApproved && (
-                        <Button
-                            className="btn-submit"
+                            className="common-btn-primary submit-btn"
                             onClick={handleBuy}
-                            type="primary"
+                            loading={submitting}
                         >
                             Buy
                         </Button>
