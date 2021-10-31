@@ -24,6 +24,16 @@ export default (props: any) => {
     const { login, logout } = useAuth();
 
     useEffect(() => {
+        if (Number(id) === -1) {
+            history.replace('/list');
+            setTimeout(() => {
+                message.info(
+                    'The NFT has not been published to the marketplace. Feel free to surf the NFT marketplace for your favorite resources.',
+                    6,
+                );
+            });
+            return;
+        }
         (async () => {
             const res = await getOrderList({ order_id: id });
             if (res && res[0]) {
