@@ -71,10 +71,10 @@ export default () => {
             let orderId;
             const contract =
                 Contracts.PlatwinMEME2WithoutRPC[process.env.APP_CHAIN_ID];
-            // const minPrice = expandTo18Decimals(values.minPrice)
-            // const maxPrice = expandTo18Decimals(values.maxPrice)
-            let minPrice = ethers.BigNumber.from('100000000000000000000');
-            let maxPrice = minPrice;
+            const minPrice = expandTo18Decimals(values.minPrice);
+            const maxPrice = expandTo18Decimals(values.maxPrice);
+            // let minPrice = ethers.BigNumber.from('100000000000000000000');
+            // let maxPrice = minPrice;
             const sellToken = values.sellToken;
             let startBlock = ethers.BigNumber.from(
                 (await provider.getBlockNumber()) + 100,
@@ -110,6 +110,7 @@ export default () => {
             message.success('Sell NFT succeed!');
             fetchOwnedList();
             setSubmitting(false);
+            handleCancel();
         } catch (errorInfo) {
             console.log('Failed:', errorInfo);
             setSubmitting(false);
@@ -242,24 +243,24 @@ export default () => {
                                 </Select>
                             </Form.Item>
                             <Form.Item
-                                label="Max price"
-                                name="maxPrice"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input max price!',
-                                    },
-                                ]}
-                            >
-                                <Input className="sell-form-input" />
-                            </Form.Item>
-                            <Form.Item
                                 label="Min price"
                                 name="minPrice"
                                 rules={[
                                     {
                                         required: true,
                                         message: 'Please input min price!',
+                                    },
+                                ]}
+                            >
+                                <Input className="sell-form-input" />
+                            </Form.Item>
+                            <Form.Item
+                                label="Max price"
+                                name="maxPrice"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input max price!',
                                     },
                                 ]}
                             >

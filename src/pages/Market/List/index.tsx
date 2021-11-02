@@ -5,6 +5,9 @@ import { useHistory } from 'umi';
 import './index.less';
 import { IGetOrderListParams, IOrderListItem, getOrderList } from '@/services';
 import IconHeart from '@/assets/images/icon-heart.png';
+import { ethers } from 'ethers';
+import { SellTokenOptions } from '@/config';
+const formatEther = ethers.utils.formatEther;
 export default () => {
     const [loading, setLoading] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -72,8 +75,20 @@ export default () => {
                                 <div className="prices">
                                     <p className="label"> Price: </p>
                                     <p className="price-amount">
-                                        <span>1 ~ 3</span>
-                                        <span> ETH</span>
+                                        <span>
+                                            {formatEther(item.min_price)} ~{' '}
+                                            {formatEther(item.max_price)}
+                                        </span>
+                                        <span>
+                                            {' '}
+                                            {
+                                                SellTokenOptions.find(
+                                                    (token) =>
+                                                        token.value ===
+                                                        item.sell_token,
+                                                )?.label
+                                            }
+                                        </span>
                                     </p>
                                 </div>
                                 <div className="options">
