@@ -1,7 +1,7 @@
 import { getOrderList, IOrderListItem } from '@/services';
 import React, { useState, useEffect, useMemo } from 'react';
 import { useHistory } from 'umi';
-import { Tag, Button, message } from 'antd';
+import { Tag, Button, message, Popover } from 'antd';
 import { ORDER_STATUS, SellTokenOptions } from '@/config';
 import { useWeb3React } from '@web3-react/core';
 import {
@@ -18,6 +18,7 @@ import {
     useCheckERC20ApprovalStatus,
     useERC20Approve,
 } from '@/hooks/useApprove';
+import { InfoCircleOutlined } from '@ant-design/icons';
 
 export default (props: any) => {
     const { account } = useWeb3React();
@@ -113,7 +114,12 @@ export default (props: any) => {
                     <span className="tag-sale">{statusText}</span>
                 </div>
                 <div className="prices">
-                    <p className="label">Price</p>
+                    <p className="label">
+                        <span> Price</span>
+                        <Popover content="Dutch auction, the price gradually changes from Max to min over time">
+                            <InfoCircleOutlined className="info-icon" />
+                        </Popover>
+                    </p>
                     <p>
                         <span>Min: </span>
                         {ethers.utils.formatEther(detail.min_price || 0)}{' '}

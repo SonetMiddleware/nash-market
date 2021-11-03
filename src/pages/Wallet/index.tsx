@@ -11,6 +11,8 @@ import { Button, message, Modal, Select, Form, Input } from 'antd';
 import Contracts from '@/config/constants/contracts';
 import { ethers } from 'ethers';
 import { expandTo18Decimals } from '@/utils/bigNumber';
+import { InfoCircleOutlined } from '@ant-design/icons';
+
 const marketContract =
     Contracts.MarketProxyWithoutRPC[process.env.APP_CHAIN_ID];
 import { SellTokenOptions } from '@/config';
@@ -266,6 +268,11 @@ export default () => {
                             >
                                 <Input className="sell-form-input" />
                             </Form.Item>
+                            <p className="tips">
+                                <InfoCircleOutlined />
+                                Dutch auction, the price gradually changes from
+                                Max to min over time
+                            </p>
                         </Form>
                     </div>
                 </div>
