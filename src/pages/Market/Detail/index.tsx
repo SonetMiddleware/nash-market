@@ -44,6 +44,13 @@ export default (props: any) => {
         setLastUpdated,
     );
 
+    const fetchDetail = async () => {
+        const res = await getOrderList({ order_id: id });
+        if (res && res[0]) {
+            setDetail(res[0]);
+        }
+    };
+
     useEffect(() => {
         if (Number(id) === -1) {
             history.replace('/list');
@@ -55,12 +62,7 @@ export default (props: any) => {
             });
             return;
         }
-        (async () => {
-            const res = await getOrderList({ order_id: id });
-            if (res && res[0]) {
-                setDetail(res[0]);
-            }
-        })();
+        fetchDetail();
     }, []);
 
     const getTokenSymbol = (tokenAddress: string) => {
@@ -80,6 +82,7 @@ export default (props: any) => {
             await market.takeOrder(id, 1);
             setSubmitting(false);
             message.success('Buy NFT succeed!');
+            fetchDetail();
         } catch (err) {
             console.log(err);
             setSubmitting(false);
