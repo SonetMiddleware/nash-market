@@ -71,7 +71,7 @@ export interface IGetOrderListParams {
 
 export interface IOrderListItem {
     order_id: string; // 订单id
-    status: string; // 订单状态
+    status: number; // 订单状态
     contract: string; // NFT合约地址
     erc: string; // 721或者1155
     token_id: string; //

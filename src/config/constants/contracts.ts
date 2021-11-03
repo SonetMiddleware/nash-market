@@ -55,4 +55,8 @@ export default {
         80001: TestnetContracts.MarketProxyWithoutRPC,
         137: '',
     },
+    DealRouter: {
+        80001: TestnetContracts.DealRouter,
+        137: '',
+    },
 };

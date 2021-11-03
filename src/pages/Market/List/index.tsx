@@ -19,7 +19,9 @@ export default () => {
 
     const fetchData = async () => {
         setLoading(true);
-        const params = {} as IGetOrderListParams;
+        const params = {
+            status: 0, // 刚创建
+        } as IGetOrderListParams;
         getOrderList(params).then((res) => {
             console.log(res);
             // setTotal(dataCount);

@@ -6,6 +6,7 @@ import Contracts from '@/config/constants/contracts';
 import Meme2Abi from '@/config/abi/contracts/PlatwinMEME2.json';
 import Meme2WithRPCAbi from '@/config/abi/contracts/PlatwinMEME2WithoutRPC.json';
 import MarketAbi from '@/config/abi/contracts/Market.json';
+import DealRouterAbi from '@/config/abi/contracts/DealRouter.json';
 import {
     getBep20Contract,
     getCakeContract,
@@ -24,11 +25,6 @@ export const useCake = () => {
     const provider = useWeb3Provider();
     return useMemo(() => getCakeContract(provider.getSigner()), [provider]);
 };
-
-console.log('process.env.APP_CHAIN_ID', process.env.APP_CHAIN_ID);
-console.log(Contracts.RPCRouter[process.env.APP_CHAIN_ID]);
-console.log(Contracts.MockRPC[process.env.APP_CHAIN_ID]);
-console.log(Contracts.PlatwinMEME2[process.env.APP_CHAIN_ID]);
 
 export const useRpcRouter = () => {
     const provider = useWeb3Provider();
@@ -102,6 +98,19 @@ export const useMarketProxyWithoutRPC = () => {
             getContract(
                 MarketAbi.abi,
                 Contracts.MarketProxyWithoutRPC[process.env.APP_CHAIN_ID],
+                provider.getSigner(),
+            ),
+        [provider],
+    );
+};
+
+export const useDealRouter = () => {
+    const provider = useWeb3Provider();
+    return useMemo(
+        () =>
+            getContract(
+                DealRouterAbi.abi,
+                Contracts.DealRouter[process.env.APP_CHAIN_ID],
                 provider.getSigner(),
             ),
         [provider],

@@ -1,18 +1,23 @@
 import { getOrderList, IOrderListItem } from '@/services';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useHistory } from 'umi';
 import { Tag, Button, message } from 'antd';
-import { SellTokenOptions } from '@/config';
+import { ORDER_STATUS, SellTokenOptions } from '@/config';
 import { useWeb3React } from '@web3-react/core';
 import {
     useMarket,
     useMarketProxyWithoutRPC,
     useMeme2,
+    useDealRouter,
 } from '@/hooks/useContract';
 import { ethers } from 'ethers';
 import './index.less';
 import useAuth from '@/hooks/useAuth';
 import { ConnectorNames } from '@/utils/web3';
+import {
+    useCheckERC20ApprovalStatus,
+    useERC20Approve,
+} from '@/hooks/useApprove';
 
 export default (props: any) => {
     const { account } = useWeb3React();
@@ -20,8 +25,24 @@ export default (props: any) => {
     const [submitting, setSubmitting] = useState(false);
     const history = useHistory();
     const id = props.match.params.id;
+    const dealRouter = useDealRouter();
     const market = useMarketProxyWithoutRPC();
     const { login, logout } = useAuth();
+
+    const sellTokenAddress = useMemo(() => {
+        return detail.sell_token || SellTokenOptions[0].value;
+    }, [detail]);
+
+    const { isApproved, setLastUpdated } = useCheckERC20ApprovalStatus(
+        sellTokenAddress,
+        dealRouter.address,
+    );
+
+    const { handleApprove, requestedApproval } = useERC20Approve(
+        sellTokenAddress,
+        dealRouter.address,
+        setLastUpdated,
+    );
 
     useEffect(() => {
         if (Number(id) === -1) {
@@ -66,6 +87,15 @@ export default (props: any) => {
         }
     };
 
+    const statusText = useMemo(() => {
+        if (detail.status === ORDER_STATUS.CREATED) {
+            return 'On Sale';
+        } else if (detail.status === ORDER_STATUS.ALL_SELLED) {
+            return 'Sold';
+        }
+        return 'On Sale';
+    }, [detail]);
+
     return (
         <div className="detail-container">
             <div className="img-container">
@@ -77,7 +107,7 @@ export default (props: any) => {
                     <span className="tag-hot">
                         <span>Hot</span>
                     </span>
-                    <span className="tag-sale">On Sale</span>
+                    <span className="tag-sale">{statusText}</span>
                 </div>
                 <div className="prices">
                     <p className="label">Price</p>
@@ -99,11 +129,21 @@ export default (props: any) => {
                             Connect Wallet
                         </button>
                     )}
-                    {account && (
+                    {account && !isApproved && (
+                        <Button
+                            className="common-btn-primary submit-btn"
+                            onClick={handleApprove}
+                            loading={requestedApproval}
+                        >
+                            Approve to buy
+                        </Button>
+                    )}
+                    {account && isApproved && (
                         <Button
                             className="common-btn-primary submit-btn"
                             onClick={handleBuy}
                             loading={submitting}
+                            disabled={detail.status === 2}
                         >
                             Buy
                         </Button>
