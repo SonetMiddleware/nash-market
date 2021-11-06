@@ -24,6 +24,7 @@ export default (props: any) => {
     const { account } = useWeb3React();
     const [detail, setDetail] = useState<IOrderListItem>({});
     const [submitting, setSubmitting] = useState(false);
+    const [cancelSubmitting, setCancelSubmitting] = useState(false);
     const history = useHistory();
     const id = props.match.params.id;
     const dealRouter = useDealRouter();
@@ -91,11 +92,27 @@ export default (props: any) => {
         }
     };
 
+    const handleCancel = async () => {
+        try {
+            setCancelSubmitting(true);
+            await market.cancelOrder(id);
+            setCancelSubmitting(false);
+            message.success('Cancel NFT succeed!');
+            fetchDetail();
+        } catch (err) {
+            console.log(err);
+            setCancelSubmitting(false);
+            message.error('Wallet issues/balance issue.');
+        }
+    };
+
     const statusText = useMemo(() => {
         if (detail.status === ORDER_STATUS.CREATED) {
             return 'On Sale';
         } else if (detail.status === ORDER_STATUS.ALL_SELLED) {
             return 'Sold';
+        } else if (detail.status === ORDER_STATUS.CANCELED) {
+            return 'Canceled';
         }
         return 'On Sale';
     }, [detail]);
@@ -140,25 +157,38 @@ export default (props: any) => {
                             Connect Wallet
                         </button>
                     )}
-                    {account && !isApproved && (
-                        <Button
-                            className="common-btn-primary submit-btn"
-                            onClick={handleApprove}
-                            loading={requestedApproval}
-                        >
-                            Approve to buy
-                        </Button>
-                    )}
-                    {account && isApproved && (
-                        <Button
-                            className="common-btn-primary submit-btn"
-                            onClick={handleBuy}
-                            loading={submitting}
-                            disabled={detail.status === 2}
-                        >
-                            Buy
-                        </Button>
-                    )}
+                    {account &&
+                        !isApproved &&
+                        detail.status === ORDER_STATUS.CREATED && (
+                            <Button
+                                className="common-btn-primary submit-btn"
+                                onClick={handleApprove}
+                                loading={requestedApproval}
+                            >
+                                Approve to buy
+                            </Button>
+                        )}
+                    {account &&
+                        isApproved &&
+                        detail.status === ORDER_STATUS.CREATED && (
+                            <Button
+                                className="common-btn-primary submit-btn"
+                                onClick={handleBuy}
+                                loading={submitting}
+                            >
+                                Buy
+                            </Button>
+                        )}
+                    {account === detail.seller &&
+                        detail.status === ORDER_STATUS.CREATED && (
+                            <Button
+                                className="common-btn cancel-btn"
+                                onClick={handleCancel}
+                                loading={cancelSubmitting}
+                            >
+                                Cancel order
+                            </Button>
+                        )}
                 </div>
             </div>
         </div>
