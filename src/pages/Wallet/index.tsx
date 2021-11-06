@@ -79,9 +79,9 @@ export default () => {
             // let maxPrice = minPrice;
             const sellToken = values.sellToken;
             let startBlock = ethers.BigNumber.from(
-                (await provider.getBlockNumber()) + 100,
+                (await provider.getBlockNumber()) + 10,
             );
-            let duration = 100;
+            const duration = values.duration;
             const tokenId = ethers.BigNumber.from(selectedToken.token_id);
             const orderNum = await market.ordersNum();
             console.log(orderNum);
@@ -236,7 +236,10 @@ export default () => {
                                     },
                                 ]}
                             >
-                                <Select className="sell-form-input">
+                                <Select
+                                    className="sell-form-input"
+                                    placeholder="Please select sell token"
+                                >
                                     {SellTokenOptions.map((item) => (
                                         <Option value={item.value}>
                                             {item.label}
@@ -254,7 +257,10 @@ export default () => {
                                     },
                                 ]}
                             >
-                                <Input className="sell-form-input" />
+                                <Input
+                                    className="sell-form-input"
+                                    placeholder="Please input min price"
+                                />
                             </Form.Item>
                             <Form.Item
                                 label="Max price"
@@ -266,12 +272,30 @@ export default () => {
                                     },
                                 ]}
                             >
-                                <Input className="sell-form-input" />
+                                <Input
+                                    className="sell-form-input"
+                                    placeholder="Please input max price "
+                                />
+                            </Form.Item>
+                            <Form.Item
+                                label="Duration blocks"
+                                name="duration"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Please input blocks!',
+                                    },
+                                ]}
+                            >
+                                <Input
+                                    className="sell-form-input"
+                                    placeholder="Please input blocks"
+                                />
                             </Form.Item>
                             <p className="tips">
                                 <InfoCircleOutlined />
                                 Dutch auction, the price gradually changes from
-                                Max to min over time
+                                max to min over duration blocks
                             </p>
                         </Form>
                     </div>

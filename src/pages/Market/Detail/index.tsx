@@ -116,7 +116,9 @@ export default (props: any) => {
                 <div className="prices">
                     <p className="label">
                         <span> Price</span>
-                        <Popover content="Dutch auction, the price gradually changes from Max to min over time">
+                        <Popover
+                            content={`Dutch auction, the price gradually changes from max to min over time from block #${detail.start_block}，the duration is ${detail.duration} blocks`}
+                        >
                             <InfoCircleOutlined className="info-icon" />
                         </Popover>
                     </p>
