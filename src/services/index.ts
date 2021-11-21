@@ -1,4 +1,7 @@
+import { getMeme2WithoutRPC } from '@/utils/contractHelper';
 import { request } from 'umi';
+import Contracts from '@/config/constants/contracts';
+
 const origin = 'https://testapi.platwin.io/api/v1';
 export interface IAddUserFavParams {
     addr: string;
@@ -96,4 +99,125 @@ export const getOrderList = async (params: IGetOrderListParams) => {
     });
     console.log(res);
     return res.data;
+};
+
+export const getOrderByTokenId = async (
+    tokenId: string | number,
+    status?: number,
+) => {
+    const url = `${origin}/orders`;
+    const params = { token_id: tokenId, status };
+    try {
+        const res = await request(url, {
+            method: 'GET',
+            params,
+        });
+        if (res.data && res.data.length === 1) {
+            return res.data[0];
+        }
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const getOwner = async (tokenId: number) => {
+    const meme2Contract = getMeme2WithoutRPC();
+    let owner = await meme2Contract.ownerOf(tokenId);
+    console.log('owner: ', owner);
+    // on market
+    if (owner === Contracts.MarketProxyWithoutRPC[process.env.APP_CHAIN_ID]) {
+        //TODO get order with tokenId, the seller is the owner
+        const order = await getOrderByTokenId(tokenId, 0);
+        console.log('order: ', order);
+        if (order) {
+            owner = order.seller;
+        }
+    }
+    return owner;
+};
+
+export const getMinter = async (tokenId: number) => {
+    const meme2Contract = getMeme2WithoutRPC();
+    const minter = await meme2Contract.minter(tokenId);
+    return minter;
+};
+
+export interface IGetTwitterBindResultParams {
+    addr?: string; // 至少传一个
+    tid?: string;
+}
+
+export enum PLATFORM {
+    Twitter = 'Twitter',
+    Facebook = 'Facebook',
+    Instgram = 'Instgram',
+}
+export interface IBindResultData {
+    addr: string;
+    tid: string;
+    platform: PLATFORM;
+    content_id?: string;
+}
+export const getTwitterBindResult = async (
+    params: IGetTwitterBindResultParams,
+): Promise<IBindResultData[]> => {
+    const url = `${origin}/bind-attr`;
+    try {
+        const res = await request(url, { method: 'GET', params });
+        console.log('getTwitterBindResult: ', res);
+        if (res.data) {
+            return res.data as IBindResultData[]; // 是个数组
+        }
+        return [];
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
+};
+
+export interface IAddToFavParams {
+    addr: string;
+    contract: string;
+    token_id: string | number;
+    uri: string;
+    fav: number; //fav等于0表示取消收藏，等于1表示收藏
+}
+export const addToFav = async (params: IAddToFavParams) => {
+    const url = `${origin}/favorite-nft`;
+    try {
+        const res = await request(url, { method: 'POST', data: params });
+        console.log('addToFav: ', res);
+        return true;
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+};
+
+export interface IGetFavNFTParams {
+    addr: string;
+    contract: string;
+}
+
+export interface IFavNFTData {
+    addr: string;
+    contract: string;
+    token_id: number;
+    uri: string;
+    isOwned?: boolean;
+    isMinted?: boolean;
+}
+
+export const getFavNFT = async (params: IGetFavNFTParams) => {
+    const url = `${origin}/favorite`;
+    try {
+        const res = await request(url, { method: 'GET', params });
+        if (res.data) {
+            return res.data as IFavNFTData[];
+        }
+        return [];
+    } catch (err) {
+        console.log(err);
+        return [];
+    }
 };

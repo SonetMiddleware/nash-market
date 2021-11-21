@@ -66,11 +66,16 @@ export default () => {
                 renderItem={(item, index) => (
                     <List.Item key={index}>
                         <div className="img-item">
-                            <div className="img-container">
-                                <img
+                            <div
+                                className="img-container"
+                                style={{
+                                    backgroundImage: `url(https://${item.uri}.ipfs.dweb.link/)`,
+                                }}
+                            >
+                                {/* <img
                                     src={`https://${item.uri}.ipfs.dweb.link/`}
                                     alt=""
-                                />
+                                /> */}
                             </div>
 
                             <div className="item-info">

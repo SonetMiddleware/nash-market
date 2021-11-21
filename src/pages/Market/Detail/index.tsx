@@ -19,10 +19,11 @@ import {
     useERC20Approve,
 } from '@/hooks/useApprove';
 import { InfoCircleOutlined } from '@ant-design/icons';
+import ImgToolbar from '@/components/ImgToolbar';
 
 export default (props: any) => {
     const { account } = useWeb3React();
-    const [detail, setDetail] = useState<IOrderListItem>({});
+    const [detail, setDetail] = useState<IOrderListItem>();
     const [submitting, setSubmitting] = useState(false);
     const [cancelSubmitting, setCancelSubmitting] = useState(false);
     const history = useHistory();
@@ -32,7 +33,7 @@ export default (props: any) => {
     const { login, logout } = useAuth();
 
     const sellTokenAddress = useMemo(() => {
-        return detail.sell_token || SellTokenOptions[0].value;
+        return detail?.sell_token || SellTokenOptions[0].value;
     }, [detail]);
 
     const { isApproved, setLastUpdated } = useCheckERC20ApprovalStatus(
@@ -107,11 +108,11 @@ export default (props: any) => {
     };
 
     const statusText = useMemo(() => {
-        if (detail.status === ORDER_STATUS.CREATED) {
+        if (detail?.status === ORDER_STATUS.CREATED) {
             return 'On Sale';
-        } else if (detail.status === ORDER_STATUS.ALL_SELLED) {
+        } else if (detail?.status === ORDER_STATUS.ALL_SELLED) {
             return 'Sold';
-        } else if (detail.status === ORDER_STATUS.CANCELED) {
+        } else if (detail?.status === ORDER_STATUS.CANCELED) {
             return 'Canceled';
         }
         return 'On Sale';
@@ -119,9 +120,19 @@ export default (props: any) => {
 
     return (
         <div className="detail-container">
-            <div className="img-container">
-                <img src={`https://${detail.uri}.ipfs.dweb.link/`} alt="" />
+            <div
+                className="img-container"
+                style={{
+                    backgroundImage: `url(https://${detail?.uri}.ipfs.dweb.link/)`,
+                }}
+            >
+                <ImgToolbar
+                    hash={detail?.uri}
+                    tokenId={Number(detail?.token_id)}
+                />
+                {/* <img src={`https://${detail?.uri}.ipfs.dweb.link/`} alt="" /> */}
             </div>
+
             <div className="detail-info">
                 <div className="tags">
                     <span className="tag-erc721">ERC721</span>
@@ -134,20 +145,20 @@ export default (props: any) => {
                     <p className="label">
                         <span> Price</span>
                         <Popover
-                            content={`Dutch auction, the price gradually changes from max to min over time from block #${detail.start_block}，the duration is ${detail.duration} blocks`}
+                            content={`Dutch auction, the price gradually changes from max to min over time from block #${detail?.start_block}，the duration is ${detail?.duration} blocks`}
                         >
                             <InfoCircleOutlined className="info-icon" />
                         </Popover>
                     </p>
                     <p>
                         <span>Min: </span>
-                        {ethers.utils.formatEther(detail.min_price || 0)}{' '}
-                        {getTokenSymbol(detail.sell_token)}
+                        {ethers.utils.formatEther(detail?.min_price || 0)}{' '}
+                        {getTokenSymbol(detail?.sell_token)}
                     </p>
                     <p>
                         <span>Max: </span>
-                        {ethers.utils.formatEther(detail.max_price || 0)}{' '}
-                        {getTokenSymbol(detail.sell_token)}
+                        {ethers.utils.formatEther(detail?.max_price || 0)}{' '}
+                        {getTokenSymbol(detail?.sell_token)}
                     </p>
                     {!account && (
                         <button
@@ -159,7 +170,7 @@ export default (props: any) => {
                     )}
                     {account &&
                         !isApproved &&
-                        detail.status === ORDER_STATUS.CREATED && (
+                        detail?.status === ORDER_STATUS.CREATED && (
                             <Button
                                 className="common-btn-primary submit-btn"
                                 onClick={handleApprove}
@@ -170,7 +181,7 @@ export default (props: any) => {
                         )}
                     {account &&
                         isApproved &&
-                        detail.status === ORDER_STATUS.CREATED && (
+                        detail?.status === ORDER_STATUS.CREATED && (
                             <Button
                                 className="common-btn-primary submit-btn"
                                 onClick={handleBuy}
@@ -179,8 +190,8 @@ export default (props: any) => {
                                 Buy
                             </Button>
                         )}
-                    {account === detail.seller &&
-                        detail.status === ORDER_STATUS.CREATED && (
+                    {account === detail?.seller &&
+                        detail?.status === ORDER_STATUS.CREATED && (
                             <Button
                                 className="common-btn cancel-btn"
                                 onClick={handleCancel}
