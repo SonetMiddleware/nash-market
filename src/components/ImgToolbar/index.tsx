@@ -184,7 +184,7 @@ function ImgToolbar(props: { hash: string; tokenId: number }) {
                         </div>
                     </Popover>
 
-                    <Popover
+                    {/* <Popover
                         placement="bottom"
                         title={'Share'}
                         content={shareContent}
@@ -193,7 +193,7 @@ function ImgToolbar(props: { hash: string; tokenId: number }) {
                         <div className="toolbar-icon">
                             <img src={IconShare} alt="" />
                         </div>
-                    </Popover>
+                    </Popover> */}
 
                     {!isInFav && (
                         <Popover content="Add to fav">
