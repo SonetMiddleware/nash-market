@@ -65,7 +65,10 @@ export default () => {
                 dataSource={data}
                 renderItem={(item, index) => (
                     <List.Item key={index}>
-                        <div className="img-item">
+                        <div
+                            className="img-item"
+                            onClick={() => toDetail(item)}
+                        >
                             <div
                                 className="img-container"
                                 style={{

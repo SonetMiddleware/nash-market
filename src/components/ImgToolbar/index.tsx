@@ -79,7 +79,7 @@ function ImgToolbar(props: { hash: string; tokenId: number }) {
 
     useEffect(() => {
         (async () => {
-            if (account && hash && tokenId) {
+            if (hash && tokenId) {
                 fetchInfo();
                 const favNFTs = await getFavNFT({
                     addr: account,
