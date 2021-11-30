@@ -38,18 +38,9 @@ function ImgToolbar(props: { hash: string; tokenId: number }) {
     const { hash, tokenId } = props;
     const ipfsOrigin = `https://${hash}.ipfs.dweb.link/`;
 
-    const isOwner = useMemo(() => {
-        return account && account === owner;
-    }, [account, owner]);
-
-    const isMinter = useMemo(() => {
-        return account && account === minter;
-    }, [account, minter]);
-
     const isBothMinterOwner = useMemo(() => {
-        console.log('isBothMinterOwner: ', isOwner, isMinter);
-        return isOwner && isMinter;
-    }, [isOwner, isMinter]);
+        return owner && owner == minter;
+    }, [owner, minter]);
 
     //TODO 根据发推人的身份来确认显示什么图标
     const fetchInfo = async () => {
@@ -206,48 +197,44 @@ function ImgToolbar(props: { hash: string; tokenId: number }) {
                         </Popover>
                     )}
 
-                    {!isBothMinterOwner &&
-                        !isOwner &&
-                        ownerPlatformAccount.length > 0 && (
-                            <Popover content="View owner">
-                                <div
-                                    className="toolbar-icon"
-                                    onClick={toOwnerTwitter}
-                                >
-                                    <img src={IconOwner} alt="" />
-                                </div>
-                            </Popover>
-                        )}
-                    {!isBothMinterOwner &&
-                        !isMinter &&
-                        minterPlatformAccount.length > 0 && (
-                            <Popover content="View minter">
-                                <div
-                                    className="toolbar-icon"
-                                    onClick={toMinterTwitter}
-                                >
-                                    <img src={IconMinter} alt="" />
-                                </div>
-                            </Popover>
-                        )}
+                    {!isBothMinterOwner && ownerPlatformAccount.length > 0 && (
+                        <Popover content="View owner">
+                            <div
+                                className="toolbar-icon"
+                                onClick={toOwnerTwitter}
+                            >
+                                <img src={IconOwner} alt="" />
+                            </div>
+                        </Popover>
+                    )}
+                    {!isBothMinterOwner && minterPlatformAccount.length > 0 && (
+                        <Popover content="View minter">
+                            <div
+                                className="toolbar-icon"
+                                onClick={toMinterTwitter}
+                            >
+                                <img src={IconMinter} alt="" />
+                            </div>
+                        </Popover>
+                    )}
                 </div>
 
-                {!isBothMinterOwner && isOwner && (
-                    <Popover content="This is the owner">
+                {/* {!isBothMinterOwner && (
+                    <Popover content="View the owner">
                         <div className="toolbar-icon" onClick={toOwnerTwitter}>
                             <img src={IconOwnerRole} alt="" />
                         </div>
                     </Popover>
                 )}
-                {!isBothMinterOwner && isMinter && (
-                    <Popover content="This is the minter">
+                {!isBothMinterOwner && (
+                    <Popover content="View the minter">
                         <div className="toolbar-icon" onClick={toMinterTwitter}>
                             <img src={IconMinterRole} alt="" />
                         </div>
                     </Popover>
-                )}
+                )} */}
                 {isBothMinterOwner && (
-                    <Popover content="This is the minter & owner">
+                    <Popover content="View the minter & owner">
                         <div className="toolbar-icon" onClick={toMinterTwitter}>
                             <svg
                                 width="17"
