@@ -69,7 +69,7 @@ export default (props: any) => {
     }, []);
 
     const getTokenSymbol = (tokenAddress: string) => {
-        if (!tokenAddress) return 'ETH';
+        if (!tokenAddress) return 'MATIC';
         return SellTokenOptions.find((item) => item.value === tokenAddress)
             ?.label;
     };

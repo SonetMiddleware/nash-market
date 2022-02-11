@@ -3,7 +3,7 @@ import { NavLink } from 'umi';
 import './index.less';
 import WalletStatus from '../WalletStatus';
 import useEagerConnect from '@/hooks/useEagerConnect';
-import Logo from '@/assets/images/logo.png';
+import Logo from '@/assets/images/soda-logo.png';
 
 export default () => {
     useEagerConnect();
