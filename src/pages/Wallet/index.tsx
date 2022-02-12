@@ -11,25 +11,25 @@ import { Button, message, Modal, Select, Form, Input } from 'antd';
 import Contracts from '@/config/constants/contracts';
 import { ethers } from 'ethers';
 import { expandTo18Decimals } from '@/utils/bigNumber';
-import { InfoCircleOutlined } from '@ant-design/icons';
-
+import SellModal from './SellModal';
+import TransferModal from './TransferModal';
 const marketContract =
     Contracts.MarketProxyWithoutRPC[process.env.APP_CHAIN_ID];
-import { SellTokenOptions } from '@/config';
-const { Option } = Select;
 
 export default () => {
     const { account } = useWeb3React();
     const meme2Contract = useMeme2WithoutRPC();
     const market = useMarketProxyWithoutRPC();
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [selectedToken, setSelectedToken] = useState<IOwnedListItem>(null);
     const [sellToken, setSellToken] = useState('');
+    const [selectedToken, setSelectedToken] = useState<IOwnedListItem>(null);
     const [favList, setFavList] = useState([]);
     const [isApproved, setIsApproved] = useState(false);
     const [form] = Form.useForm();
     const provider = useWeb3Provider();
     const [submitting, setSubmitting] = useState(false);
+    const [transferring, setTransferring] = useState(false);
+    const [transferModalVisible, setTransferModalVisible] = useState(false);
 
     const getIsApproved = async (tokenId) => {
         const approver = await meme2Contract.getApproved(
@@ -57,6 +57,32 @@ export default () => {
     const handleSell = (token: IOwnedListItem) => {
         setSelectedToken(token);
         setIsModalVisible(true);
+    };
+
+    const handleTransfer = (token: IOwnedListItem) => {
+        setSelectedToken(token);
+        setTransferModalVisible(true);
+    };
+
+    const handleTransferOk = async (target: string) => {
+        try {
+            setTransferring(true);
+            const tx = await meme2Contract.transferFrom(
+                account,
+                target,
+                selectedToken.token_id,
+            );
+            const receipt = await tx.wait();
+            console.log(receipt);
+            message.success('Transfer NFT succeed!');
+            fetchOwnedList();
+            setTransferring(false);
+            setTransferModalVisible(false);
+        } catch (e) {
+            console.log(e);
+            message.error('Transfer NFT failed.');
+            setTransferring(false);
+        }
     };
 
     const handleOk = async () => {
@@ -124,13 +150,6 @@ export default () => {
         setIsModalVisible(false);
         setSubmitting(false);
     };
-    const onFinish = (values: any) => {
-        console.log('Success:', values);
-    };
-
-    const onFinishFailed = (errorInfo: any) => {
-        console.log('Failed:', errorInfo);
-    };
 
     const handleApprove = async () => {
         try {
@@ -186,6 +205,12 @@ export default () => {
                             >
                                 Sell
                             </Button>
+                            <Button
+                                onClick={() => handleTransfer(item)}
+                                className="btn-sell"
+                            >
+                                Transfer
+                            </Button>
                         </div>
                     </li>
                 ))}
@@ -198,109 +223,21 @@ export default () => {
                 onCancel={handleCancel}
                 okButtonProps={{ disabled: !isApproved, loading: submitting }}
             >
-                <div className="sell-container">
-                    <div className="sell-img-container">
-                        <img
-                            src={`https://${selectedToken?.uri}.ipfs.dweb.link/`}
-                            alt=""
-                        />
-                    </div>
-                    <div className="sell-form">
-                        {!isApproved && (
-                            <div style={{ marginBottom: 15 }}>
-                                <Button
-                                    type="primary"
-                                    className="common-btn-primary btn-approve"
-                                    onClick={handleApprove}
-                                    loading={submitting}
-                                >
-                                    Approve to sell
-                                </Button>
-                            </div>
-                        )}
-                        <Form
-                            form={form}
-                            name="basic"
-                            initialValues={{ remember: true }}
-                            onFinish={onFinish}
-                            onFinishFailed={onFinishFailed}
-                            autoComplete="off"
-                        >
-                            <Form.Item
-                                label="Sell token"
-                                name="sellToken"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please select sell token!',
-                                    },
-                                ]}
-                            >
-                                <Select
-                                    className="sell-form-input"
-                                    placeholder="Please select sell token"
-                                >
-                                    {SellTokenOptions.map((item) => (
-                                        <Option value={item.value}>
-                                            {item.label}
-                                        </Option>
-                                    ))}
-                                </Select>
-                            </Form.Item>
-                            <Form.Item
-                                label="Min price"
-                                name="minPrice"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input min price!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    className="sell-form-input"
-                                    placeholder="Please input min price"
-                                />
-                            </Form.Item>
-                            <Form.Item
-                                label="Max price"
-                                name="maxPrice"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input max price!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    className="sell-form-input"
-                                    placeholder="Please input max price "
-                                />
-                            </Form.Item>
-                            <Form.Item
-                                label="Duration blocks"
-                                name="duration"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input blocks!',
-                                    },
-                                ]}
-                            >
-                                <Input
-                                    className="sell-form-input"
-                                    placeholder="Please input blocks"
-                                />
-                            </Form.Item>
-                            <p className="tips">
-                                <InfoCircleOutlined />
-                                Dutch auction, the price gradually changes from
-                                max to min over duration blocks
-                            </p>
-                        </Form>
-                    </div>
-                </div>
+                <SellModal
+                    isApproved={isApproved}
+                    handleApprove={handleApprove}
+                    submitting={submitting}
+                    selectedToken={selectedToken}
+                    form={form}
+                />
             </Modal>
+            <TransferModal
+                visible={transferModalVisible}
+                onCancel={() => setTransferModalVisible(false)}
+                onOk={handleTransferOk}
+                selectedToken={selectedToken}
+                transferring={transferring}
+            />
         </div>
     );
 };
