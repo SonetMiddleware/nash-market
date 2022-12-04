@@ -14,6 +14,7 @@ export default [
 
             { exact: true, path: '/mint', component: '@/pages/Mint' },
             { exact: true, path: '/wallet', component: '@/pages/Wallet' },
+            { exact: true, path: '/flow-sign', component: '@/pages/FlowSign' },
         ],
     },
 ];

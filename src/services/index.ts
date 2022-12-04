@@ -61,7 +61,7 @@ export const getUserOwnedList = async (
         params,
     });
     console.log(res);
-    return res.data;
+    return res.data.data;
 };
 
 export interface IGetOrderListParams {
@@ -98,7 +98,7 @@ export const getOrderList = async (params: IGetOrderListParams) => {
         params,
     });
     console.log(res);
-    return res.data;
+    return res.data.data;
 };
 
 export const getOrderByTokenId = async (
